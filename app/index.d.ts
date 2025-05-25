@@ -73,6 +73,10 @@ declare interface Trip {
   location: Location;
   payment_link: string;
 }
+declare interface HeaderProps {
+  title: string;
+  description: string;
+}
 
 declare interface TripCardProps {
   id: string;
@@ -83,7 +87,7 @@ declare interface TripCardProps {
   price: string;
 }
 
-declare interface StatsCard {
+declare interface StatsCardProps {
   headerTitle: string;
   total: number;
   lastMonthCount: number;
