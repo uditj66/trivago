@@ -1,12 +1,13 @@
 // @ts-nocheck
-import { Sidebar, SidebarComponent } from "@syncfusion/ej2-react-navigations";
+import { SidebarComponent } from "@syncfusion/ej2-react-navigations";
 import { Link } from "react-router";
 import NavItems from "./NavItems";
+import { useRef } from "react";
 
 const Mobilesidebar = () => {
-  let sidebar: SidebarComponent;
+  const sidebarRef = useRef<SidebarComponent>(null);
   const toogleSidebar = () => {
-    sidebar.toggle();
+    sidebarRef.current.toggle();
   };
   return (
     <div className="mobile-sidebar wrapper">
@@ -17,7 +18,7 @@ const Mobilesidebar = () => {
             alt="logo"
             className="size-[60px]"
           />
-          <h1>TravInVac</h1>
+          <h1>TriVago</h1>
         </Link>
 
         <button className="cursor-pointer" onClick={toogleSidebar}>
@@ -26,9 +27,9 @@ const Mobilesidebar = () => {
       </header>
       <SidebarComponent
         width={270}
-        ref={(Sidebar) => (sidebar = Sidebar)}
+        ref={sidebarRef}
         // after the sidebar is created we want to hide it
-        created={() => sidebar.hide()}
+        created={() => sidebarRef.current.hide()}
         // on clicking outside the side-bar we want to close the sidebar
         closeOnDocumentClick={true}
         // shows us a difference in  background

@@ -63,6 +63,7 @@ export const calculateTrendPercentage = (
   }
 };
 
+// upper case the first letter
 export const formatKey = (key: keyof TripFormData) => {
   return key
     .replace(/([A-Z])/g, " $1")

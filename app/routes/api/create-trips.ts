@@ -1,0 +1,122 @@
+import { GoogleGenerativeAI } from "@google/generative-ai";
+import { ID } from "appwrite";
+import { data, type ActionFunctionArgs } from "react-router";
+import { appwriteConfig, database } from "~/appwrite/client";
+import { parseMarkdownToJson } from "~/lib/utils";
+
+export const action = async ({ request }: ActionFunctionArgs) => {
+  const {
+    country,
+    numberOfDays,
+    budgetType,
+    interests,
+    travelStyle,
+    groupType,
+    userId,
+  } = await request.json();
+  const google = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
+  const unsplash_api_key = process.env.UNSPLASH_ACCESS_KEY!;
+  try {
+    const prompt = `Generate a ${numberOfDays}-day travel itinerary for ${country} based on the following user information:
+    Budget: '${budgetType}'
+    Interests: '${interests}'
+    TravelStyle: '${travelStyle}'
+    GroupType: '${groupType}'
+    Return the itinerary and lowest estimated price in a clean, non-markdown JSON format with the following structure:
+    {
+    "name": "A descriptive title for the trip",
+    "description": "A brief description of the trip and its highlights not exceeding 100 words",
+    "estimatedPrice": "Lowest average price for the trip in USD, e.g.$price",
+    "duration": ${numberOfDays},
+    "budget": "${budgetType}",
+    "travelStyle": "${travelStyle}",
+    "country": "${country}",
+    "interests": ${interests},
+    "groupType": "${groupType}",
+    "bestTimeToVisit": [
+      '🌸 Season (from month to month): reason to visit',
+      '☀️ Season (from month to month): reason to visit',
+      '🍁 Season (from month to month): reason to visit',
+      '❄️ Season (from month to month): reason to visit'
+    ],
+    "weatherInfo": [
+      '☀️ Season: temperature range in Celsius (temperature range in Fahrenheit)',
+      '🌦️ Season: temperature range in Celsius (temperature range in Fahrenheit)',
+      '🌧️ Season: temperature range in Celsius (temperature range in Fahrenheit)',
+      '❄️ Season: temperature range in Celsius (temperature range in Fahrenheit)'
+    ],
+    "location": {
+      "city": "name of the city or region",
+      "coordinates": [latitude, longitude],
+      "openStreetMap": "link to open street map"
+    },
+    "itinerary": [
+    {
+      "day": 1,
+      "location": "City/Region Name",
+      "activities": [
+        {"time": "Morning", "description": "🏰 Visit the local historic castle and enjoy a scenic walk"},
+        {"time": "Afternoon", "description": "🖼️ Explore a famous art museum with a guided tour"},
+        {"time": "Evening", "description": "🍷 Dine at a rooftop restaurant with local wine"}
+      ]
+    },
+    ...
+    ]
+    }`;
+    const textResult = await google
+      .getGenerativeModel({ model: "gemini-2.0-flash" })
+      .generateContent(prompt);
+    /*
+     1.result.response is the full response object from the AI API call.
+     2.Calling .text() reads the AI-generated content inside that response as a plain text string
+
+    */
+    const trip = parseMarkdownToJson(textResult.response.text());
+    const imageResponse = await fetch(
+      `https://api.unsplash.com/search/photos?query=${country} ${interests} ${travelStyle}&client_id=${unsplash_api_key}`
+    );
+
+    const imageUrls = (await imageResponse.json()).results
+      .slice(0, 3)
+      .map((result: any) => result.urls?.regular || null);
+    /* 
+ ]  ###SIMPLE EXPLAINATION OF ABOVE CODE
+    ### All the below code depends on return type of the unsplash API
+
+     Step 1: Parse JSON from the HTTP response
+const jsonResponse = await imageResponse.json();
+
+     Step 2: Extract the 'results' array from the JSON response
+const resultsArray = jsonResponse.results;
+
+     Step 3: Take the first 3 image result objects
+const firstThreeResults = resultsArray.slice(0, 3);
+
+     Step 4: Map the 3 image objects to their 'regular' image URLs or null if missing
+const imageUrls = firstThreeResults.map((result: any) => {
+  if (result.urls && result.urls.regular) {
+    return result.urls.regular;
+  } else {
+    return null;
+  }
+});
+
+*/
+
+    const result = await database.createDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.tripCollectionId,
+      ID.unique(),
+      {
+        tripDetails: JSON.stringify(trip),
+        createdAt: new Date().toISOString(),
+        imageUrls,
+        userId,
+      }
+    );
+
+    return data({ id: result.$id });
+  } catch (error) {
+    console.error("Error generating AI Travel Plan :", error);
+  }
+};

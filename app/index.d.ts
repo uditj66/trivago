@@ -66,7 +66,7 @@ declare interface Trip {
   interests: string;
   groupType: string;
   country: string;
-  imageUrls: string[];
+  imageUrls:string[]
   itinerary: DayPlan[];
   bestTimeToVisit: string[];
   weatherInfo: string[];
@@ -76,6 +76,8 @@ declare interface Trip {
 declare interface HeaderProps {
   title: string;
   description: string;
+  ctaText?:string;
+  ctaUrl?:string
 }
 
 declare interface TripCardProps {

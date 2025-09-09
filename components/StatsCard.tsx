@@ -11,6 +11,14 @@ const StatsCard = ({
     lastMonthCount
   );
 
+  /* 
+    It declares a constant variable named isDecrement.
+
+    It assigns isDecrement the boolean value resulting from checking if the variable trend is strictly equal to the string "decrement".
+
+    If trend equals "decrement", then isDecrement will be true; otherwise, it will be false 
+    */
+
   const isDecrement = trend === "decrement";
   return (
     <div>

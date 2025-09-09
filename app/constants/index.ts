@@ -9,15 +9,15 @@ export const sidebarItems = [
     href: "/dashboard",
   },
   {
-    id: 3,
+    id: 2,
     icon: "/assets/icons/users.svg",
     label: "All Users",
-    href: "/allUsers",
+    href: "/all-users",
   },
   {
-    id: 4,
+    id: 3,
     icon: "/assets/icons/itinerary.svg",
-    label: "AI Trips",
+    label: "All Trips",
     href: "/trips",
   },
 ];
@@ -141,9 +141,9 @@ export const RIGHT_CONFETTI = {
   angle: 135,
   origin: { x: 1, y: 1 },
 };
-export const user = {
-  username: "uditj66",
-};
+// export const user = {
+//   username: "uditj66",
+// };
 export const dashBoardStats = {
   totalUsers: 12450,
   userJoined: { currentMonth: 218, lastMonth: 176 },

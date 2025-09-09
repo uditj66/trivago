@@ -40,7 +40,7 @@ const TripCard = ({
       </article>
       <div className="mt-5 pl-[18px] pr-3.5 pb-5">
         {/*  cssClass to provide styling to syncfusion componenets !=> to override existing css of syncfusion componenet */}
-        <ChipListComponent>
+        <ChipListComponent id="travel-chip">
           <ChipsDirective>
             {tags.map((tag, index) => (
               <ChipDirective
