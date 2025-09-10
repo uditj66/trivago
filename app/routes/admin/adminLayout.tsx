@@ -41,7 +41,7 @@ const adminLayout = () => {
         </SidebarComponent>
       </aside>
 
-      {/* Below code alows us to 
+      {/* Below code allows us to 
       1.It tells React Router where to render the child routes inside the parent route's layout/component.
 
       2. It allows you to create nested routes with a shared layout.

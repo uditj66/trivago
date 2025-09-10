@@ -103,11 +103,13 @@ const allTrips = ({ loaderData }: Route.ComponentProps) => {
       return;
     }
     const user = await account.get();
-    if (!user.$id) {
-      console.error("User is not authenticated");
-      setLoading(false);
-      return;
-    }
+    // if (!user.$id) {
+    //   console.error("User is not authenticated");
+    //   setLoading(false);
+    //   return;
+    // }
+    setLoading(true);
+    setError(null);
     try {
       const response = await fetch(`/api/create-trip`, {
         method: "POST",
@@ -139,9 +141,6 @@ const allTrips = ({ loaderData }: Route.ComponentProps) => {
     } finally {
       setLoading(false);
     }
-
-    setLoading(true);
-    setError(null);
   };
   return (
     <main className="flex flex-col gap-10 wrapper pb-20">
