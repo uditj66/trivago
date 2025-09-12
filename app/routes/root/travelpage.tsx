@@ -8,7 +8,6 @@ import { useState } from "react";
 import { getUser } from "~/appwrite/authrelated";
 import { PagerComponent } from "@syncfusion/ej2-react-grids";
 import FeaturedDestination from "components/FeturedDestination";
-import { count } from "console";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const limit = 8;
