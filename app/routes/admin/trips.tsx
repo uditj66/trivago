@@ -24,7 +24,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 };
 const trips = ({ loaderData }: Route.ComponentProps) => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const initialPage = parseInt(searchParams.get("page")??"1");
+  const initialPage = parseInt(searchParams.get("page") ?? "1");
   const [currentPage, setCurrentPage] = useState(initialPage);
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -51,10 +51,10 @@ const trips = ({ loaderData }: Route.ComponentProps) => {
               id,
               name,
               imageUrls,
-              country,
               interests,
               travelStyle,
               estimatedPrice,
+              country,
             }) => (
               <TripCard
                 key={id}
@@ -69,7 +69,7 @@ const trips = ({ loaderData }: Route.ComponentProps) => {
           )}
         </div>
         <PagerComponent
-        cssClass="!mb-4"
+          cssClass="!mb-4"
           totalRecordsCount={loaderData.total}
           pageSize={8}
           currentPage={currentPage}

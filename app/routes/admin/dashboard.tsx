@@ -61,7 +61,7 @@ export const clientLoader = async () => {
   const mappedUsers: UsersItineraryCount[] = allUsers.users.map((user) => ({
     imageUrl: user.imageUrl,
     name: user.name,
-    count: user.itineraryCount??Math.floor(Math.random()*10)
+    count: user.itineraryCount ?? Math.floor(Math.random() * 10),
   }));
   return {
     user,
@@ -136,7 +136,7 @@ const dashboard = ({ loaderData }: Route.ComponentProps) => {
               id={trip.id.toString()}
               imageUrl={trip.imageUrls[0]}
               name={trip.name!}
-              location={trip.itinerary?.[0]?.location ?? ""}
+              location={trip.country!}
               tags={[trip.interests!, trip.travelStyle!]}
               price={trip.estimatedPrice!}
             />
