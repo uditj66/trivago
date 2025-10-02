@@ -22,7 +22,7 @@ export const storeUserData = async () => {
     if (!user) throw new Error("User not found");
     
 
-    // provider access topken is provided by google or the currently logged-in user
+    // provider access token is provided by google or the currently logged-in user
     const { providerAccessToken } = (await account.getSession("current")) || {};
     const profilePicture = providerAccessToken
       ? await getGooglePicture(providerAccessToken)

@@ -128,6 +128,8 @@ const allTrips = ({ loaderData }: Route.ComponentProps) => {
       });
 
       if (!response.ok) {
+        const text = await response.text(); // might be HTML or empty
+        console.error("Error response:", text);
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
 
